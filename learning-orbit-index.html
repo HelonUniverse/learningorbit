@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Learning Orbit™ — Helon Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{--gold:#FFD700;--pink:#FF6B9D;--purple:#A78BFA;--teal:#2DD4BF;--orange:#FB923C;--bg:#060818;--card:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);font-family:'Nunito',sans-serif;color:#fff;overflow-x:hidden}
+.nebula{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 20% 20%,rgba(167,139,250,.12),transparent),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(45,212,191,.10),transparent),radial-gradient(ellipse 50% 60% at 50% 50%,rgba(255,107,157,.06),transparent)}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 15% 25%,#fff,transparent),radial-gradient(1px 1px at 35% 10%,#fff,transparent),radial-gradient(2px 2px at 60% 40%,#fff,transparent),radial-gradient(1px 1px at 80% 15%,#fff,transparent),radial-gradient(1.5px 1.5px at 90% 60%,#fff,transparent),radial-gradient(1px 1px at 45% 75%,#fff,transparent),radial-gradient(2px 2px at 10% 85%,#fff,transparent),radial-gradient(1px 1px at 70% 90%,#fff,transparent),radial-gradient(1.5px 1.5px at 25% 55%,#fff,transparent),radial-gradient(1px 1px at 55% 20%,#fff,transparent);opacity:.45}
+.floaters{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.floater{position:absolute;animation:floatUp linear infinite;opacity:.08}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0);opacity:0}10%{opacity:.08}90%{opacity:.08}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+.wrap{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:24px 18px 60px}
+.header{text-align:center;padding:28px 0 20px}
+.logo-ring{display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:50%;background:conic-gradient(from 0deg,#FFD700,#A78BFA,#2DD4BF,#FFD700);padding:3px;margin-bottom:12px;animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-inner{width:100%;height:100%;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:30px}
+.brand{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.45);text-transform:uppercase}
+.app-name{font-family:'Orbitron',monospace;font-size:28px;font-weight:900;background:linear-gradient(135deg,#FFD700,#FB923C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:4px 0 2px}
+.tm{font-size:14px;-webkit-text-fill-color:rgba(255,215,0,.55)}
+.tagline{font-size:14px;color:rgba(255,255,255,.45);font-style:italic}
+.card{background:var(--card);backdrop-filter:blur(16px);border:1.5px solid var(--border);border-radius:28px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.hidden{display:none!important}
+/* INTRO */
+.mascots{display:flex;justify-content:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.mascot{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:default;transition:transform .25s}
+.mascot:hover{transform:translateY(-6px) scale(1.08)}
+.morb{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid;position:relative}
+.morb::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1.5px dashed;opacity:.3;animation:spin 8s linear infinite}
+.mlabel{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.intro-title{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;text-align:center;line-height:1.3;margin-bottom:10px}
+.intro-desc{text-align:center;color:rgba(255,255,255,.6);font-size:14px;line-height:1.6;margin-bottom:22px}
+.field-label{font-size:13px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:block}
+.name-input{width:100%;background:rgba(255,255,255,.07);border:2px solid rgba(255,215,0,.3);border-radius:16px;padding:14px 18px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;color:#fff;outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:20px}
+.name-input::placeholder{color:rgba(255,255,255,.22)}
+.name-input:focus{border-color:rgba(255,215,0,.7);box-shadow:0 0 0 3px rgba(255,215,0,.1)}
+.launch-btn{display:block;width:100%;padding:17px;font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:#060818;background:linear-gradient(135deg,#FFD700,#FB923C);border:none;border-radius:18px;cursor:pointer;box-shadow:0 8px 28px rgba(255,165,0,.4);letter-spacing:1px;text-transform:uppercase;transition:transform .2s,box-shadow .2s}
+.launch-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 14px 35px rgba(255,165,0,.5)}
+.launch-btn:disabled{background:rgba(255,255,255,.08);color:rgba(255,255,255,.2);box-shadow:none;cursor:not-allowed}
+/* PROGRESS */
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prog-label{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px}
+.prog-pts{font-size:13px;color:rgba(255,255,255,.5)}
+.prog-track{background:rgba(255,255,255,.08);border-radius:50px;height:12px;position:relative;border:1px solid rgba(255,255,255,.08);margin-bottom:22px;overflow:visible}
+.prog-fill{height:100%;background:linear-gradient(90deg,#FFD700,#FB923C,#FF6B9D);border-radius:50px;transition:width .5s cubic-bezier(.4,0,.2,1);position:relative}
+.prog-rocket{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:18px;filter:drop-shadow(0 0 8px gold)}
+/* QUESTION */
+.qbubble{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;padding:20px;text-align:center;margin-bottom:18px}
+.qemoji{font-size:52px;display:block;margin-bottom:10px;animation:floatAnim 3s ease-in-out infinite}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.qchip{display:inline-block;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.25);border-radius:50px;padding:3px 12px;margin-bottom:10px}
+.qtext{font-size:19px;font-weight:800;line-height:1.4}
+.qhint{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px}
+.options{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:16px;padding:13px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:rgba(255,255,255,.8);transition:all .2s;width:100%}
+.opt:hover{background:rgba(255,255,255,.1);transform:translateX(4px)}
+.opt-icon{font-size:24px;flex-shrink:0}
+.opt-check{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.2);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;transition:all .2s}
+.next-btn{width:100%;padding:16px;font-family:'Orbitron',monospace;font-size:15px;font-weight:700;letter-spacing:1px;color:#060818;background:linear-gradient(135deg,#FFD700,#FB923C);border:none;border-radius:18px;cursor:pointer;box-shadow:0 8px 22px rgba(255,165,0,.35);transition:all .2s;text-transform:uppercase}
+.next-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 28px rgba(255,165,0,.45)}
+.next-btn:disabled{background:rgba(255,255,255,.08);color:rgba(255,255,255,.25);box-shadow:none;cursor:not-allowed}
+/* RESULTS */
+.results-header{text-align:center;margin-bottom:24px}
+.results-icon{font-size:58px;display:block;margin-bottom:10px}
+.results-title{font-family:'Orbitron',monospace;font-size:24px;font-weight:900;background:linear-gradient(135deg,#FFD700,#FB923C,#FF6B9D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.results-sub{color:rgba(255,255,255,.5);font-size:14px}
+.result-item{border-radius:20px;padding:18px 20px;margin-bottom:12px;border:1.5px solid;position:relative;overflow:hidden}
+.ri-top{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.ri-medal{font-size:34px}
+.ri-animal{font-size:30px}
+.ri-info{flex:1}
+.ri-name{font-family:'Orbitron',monospace;font-size:16px;font-weight:700}
+.ri-pct{font-size:11px;opacity:.6;margin-top:2px}
+.ri-pts{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;padding:5px 13px;border-radius:10px}
+.ri-desc{font-size:13px;opacity:.8;line-height:1.5;margin-bottom:10px}
+.ri-tips{display:flex;flex-wrap:wrap;gap:5px}
+.ri-tip{border-radius:50px;padding:3px 11px;font-size:11px;font-weight:800;color:#fff}
+.ri-wm{position:absolute;bottom:-8px;right:8px;font-size:68px;opacity:.05}
+.all-scores{border-top:1px dashed rgba(255,255,255,.1);padding-top:16px;margin-top:6px}
+.all-scores-title{text-align:center;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
+.score-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.score-box{border-radius:14px;padding:10px 14px;min-width:76px;text-align:center;border:1.5px solid}
+.sb-icon{font-size:22px}
+.sb-label{font-size:10px;font-weight:800;letter-spacing:.5px;margin-top:2px}
+.sb-num{font-family:'Orbitron',monospace;font-size:22px;font-weight:900}
+.action-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.action-btn{flex:1;min-width:120px;padding:15px;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;border-radius:16px;cursor:pointer;transition:all .2s;letter-spacing:.5px;text-transform:uppercase;border:none}
+.btn-print{background:rgba(45,212,191,.15);border:1.5px solid rgba(45,212,191,.4)!important;color:#fff}
+.btn-print:hover{background:rgba(45,212,191,.28);transform:translateY(-2px)}
+.btn-restart{background:linear-gradient(135deg,#FFD700,#FB923C);color:#060818;box-shadow:0 6px 18px rgba(255,165,0,.35)}
+.btn-restart:hover{transform:translateY(-2px)}
+/* CERTIFICATE */
+.cert-wrap{display:none}
+@media print{
+  body>*:not(.cert-wrap){display:none!important}
+  .cert-wrap{display:block!important}
+  body{background:#060818!important;margin:0;padding:0}
+}
+.cert{width:794px;min-height:560px;margin:0 auto;background:#060818;color:#fff;padding:40px 50px;position:relative;overflow:hidden}
+.cert-nebula{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 20%,rgba(167,139,250,.15),transparent),radial-gradient(ellipse 50% 40% at 85% 80%,rgba(45,212,191,.12),transparent)}
+.cert-border{position:absolute;inset:8px;border:2px solid;border-image:linear-gradient(135deg,#FFD700,#FB923C,#FF6B9D,#A78BFA,#2DD4BF,#FFD700) 1;pointer-events:none}
+.cert-corner{position:absolute;font-size:22px;opacity:.4}
+.cert-corner.tl{top:16px;left:16px}.cert-corner.tr{top:16px;right:16px}.cert-corner.bl{bottom:16px;left:16px}.cert-corner.br{bottom:16px;right:16px}
+.cert-header{text-align:center;margin-bottom:20px;position:relative}
+.cert-brand{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:4px}
+.cert-title-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+.cert-title{font-family:'Orbitron',monospace;font-size:26px;font-weight:900;background:linear-gradient(135deg,#FFD700,#FB923C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cert-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,.4),transparent);margin:8px 0}
+.cert-presents{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.cert-name{font-family:'Orbitron',monospace;font-size:28px;font-weight:900;text-shadow:0 0 30px rgba(255,215,0,.4)}
+.cert-sub{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
+.cert-orbits{display:flex;gap:12px;justify-content:center;margin:16px 0}
+.cert-orbit{flex:1;max-width:200px;border-radius:16px;padding:14px 12px;border:1.5px solid;text-align:center;position:relative;overflow:hidden}
+.cert-orbit-rank{font-size:22px;margin-bottom:4px}
+.cert-orbit-animal{font-size:28px;margin-bottom:3px}
+.cert-orbit-name{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:.5px}
+.cert-orbit-desc{font-size:10px;opacity:.65;margin-top:5px;line-height:1.4}
+.cert-orbit-wm{position:absolute;bottom:-6px;right:4px;font-size:44px;opacity:.06}
+.cert-tips-row{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.cert-tip-col{flex:1;max-width:200px}
+.cert-tip-title{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:.45;margin-bottom:5px;text-align:center}
+.cert-tip-item{font-size:9px;font-weight:700;margin-bottom:3px;display:flex;align-items:flex-start;gap:4px}
+.cert-footer{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.cert-footer-brand{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3)}
+.cert-footer-copy{font-size:9px;color:rgba(255,255,255,.25);text-align:right}
+.cert-seal{display:flex;flex-direction:column;align-items:center;gap:2px}
+.cert-seal-ring{width:56px;height:56px;border-radius:50%;border:2px solid rgba(255,215,0,.5);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 12px rgba(255,215,0,.2)}
+.cert-seal-text{font-family:'Orbitron',monospace;font-size:7px;color:rgba(255,215,0,.5);letter-spacing:1px}
+/* CONFETTI */
+.cf{position:fixed;border-radius:2px;animation:cfFall linear forwards;z-index:999;pointer-events:none}
+@keyframes cfFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="nebula"></div>
+<div class="stars"></div>
+<div class="floaters" id="floaters"></div>
+
+<div class="wrap">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-ring"><div class="logo-inner">🪐</div></div>
+    <div class="brand">Helon Universe</div>
+    <div class="app-name">Learning Orbit<span class="tm">™</span></div>
+    <div class="tagline">Discover how your brain explores the universe</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="card" id="intro">
+    <div class="mascots">
+      <div class="mascot">
+        <div class="morb" style="background:rgba(255,107,157,.1);border-color:rgba(255,107,157,.5)">🦁</div>
+        <div class="mlabel" style="color:#FF6B9D">Visual</div>
+      </div>
+      <div class="mascot">
+        <div class="morb" style="background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.5)">🦜</div>
+        <div class="mlabel" style="color:#A78BFA">Aural</div>
+      </div>
+      <div class="mascot">
+        <div class="morb" style="background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.5)">🦉</div>
+        <div class="mlabel" style="color:#2DD4BF">Reader</div>
+      </div>
+      <div class="mascot">
+        <div class="morb" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.5)">🐒</div>
+        <div class="mlabel" style="color:#FBBF24">Explorer</div>
+      </div>
+    </div>
+    <div class="intro-title">Find Your Learning Orbit! 🌌</div>
+    <p class="intro-desc">Answer 16 space-age questions and discover your unique way of exploring knowledge. You can pick more than one! 🚀</p>
+    <label class="field-label" for="sname">🧑‍🚀 What's your name, Explorer?</label>
+    <input class="name-input" id="sname" type="text" placeholder="Type your name here..." oninput="checkName()"/>
+    <button class="launch-btn" id="launch-btn" disabled onclick="startQuiz()">🚀 LAUNCH INTO ORBIT</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="card hidden" id="qcard">
+    <div style="margin-bottom:18px">
+      <div class="prog-row">
+        <span class="prog-label" id="qcounter">MISSION 1 / 16</span>
+        <span class="prog-pts" id="qpts">⭐ 0 pts</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="pfill" style="width:0%">
+          <span class="prog-rocket">🚀</span>
+        </div>
+      </div>
+    </div>
+    <div class="qbubble">
+      <span class="qemoji" id="qemoji">🌌</span>
+      <div class="qchip" id="qchip">MISSION 1</div>
+      <div class="qtext" id="qtext"></div>
+      <div class="qhint">💫 You can pick more than one!</div>
+    </div>
+    <div class="options" id="opts"></div>
+    <button class="next-btn" id="next-btn" disabled onclick="nextQ()">NEXT MISSION →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card hidden" id="rcard">
+    <div class="results-header">
+      <span class="results-icon">🏆</span>
+      <div class="results-title">ORBIT UNLOCKED!</div>
+      <div class="results-sub" id="rgreet"></div>
+    </div>
+    <div id="top3"></div>
+    <div class="all-scores">
+      <div class="all-scores-title">Full Mission Log</div>
+      <div class="score-row" id="allscores"></div>
+    </div>
+    <div class="action-row">
+      <button class="action-btn btn-print" onclick="window.print()">🖨️ Print Certificate</button>
+      <button class="action-btn btn-restart" onclick="restart()">🔄 New Mission</button>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE -->
+<div class="cert-wrap" id="cert-wrap">
+  <div class="cert">
+    <div class="cert-nebula"></div>
+    <div class="cert-border"></div>
+    <div class="cert-corner tl">✦</div><div class="cert-corner tr">✦</div>
+    <div class="cert-corner bl">✦</div><div class="cert-corner br">✦</div>
+    <div class="cert-header">
+      <div class="cert-brand">Helon Universe</div>
+      <div class="cert-title-row"><span style="font-size:28px">🪐</span><div class="cert-title">Learning Orbit™</div></div>
+      <div class="cert-divider"></div>
+      <div class="cert-presents">This certificate is awarded to</div>
+      <div class="cert-name" id="cname">—</div>
+      <div class="cert-sub">Explorer Profile — Certified Learning Orbits</div>
+    </div>
+    <div class="cert-orbits" id="corbits"></div>
+    <div class="cert-tips-row" id="ctips"></div>
+    <div class="cert-footer">
+      <div>
+        <div class="cert-footer-brand">HELON UNIVERSE · LEARNING ORBIT™</div>
+        <div class="cert-footer-copy" id="cdate"></div>
+      </div>
+      <div class="cert-seal">
+        <div class="cert-seal-ring">🌟</div>
+        <div class="cert-seal-text">CERTIFIED</div>
+      </div>
+      <div style="text-align:right">
+        <div class="cert-footer-copy">© 2025 Helon Universe. All rights reserved.</div>
+        <div class="cert-footer-copy">Learning Orbit™ is a trademark of Helon Universe.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const Qs=[
+  {e:"📚",t:"Your teacher is explaining something new. What helps you understand it BEST?",o:[{i:"🖼️",l:"See pictures, drawings or diagrams",s:"V"},{i:"🗣️",l:"Listen to them explain it out loud",s:"A"},{i:"📖",l:"Read about it myself",s:"R"},{i:"🙌",l:"Try it out with my own hands!",s:"K"}]},
+  {e:"🎮",t:"You're learning a brand new game. How do you learn the rules?",o:[{i:"🗺️",l:"Look at pictures or a diagram",s:"V"},{i:"👂",l:"Have someone explain the rules",s:"A"},{i:"📋",l:"Read the instructions carefully",s:"R"},{i:"▶️",l:"Just start playing and figure it out!",s:"K"}]},
+  {e:"🧠",t:"You need to remember something really important. What do you do?",o:[{i:"✏️",l:"Draw a picture or map",s:"V"},{i:"🔁",l:"Say it out loud over and over",s:"A"},{i:"📝",l:"Write it down on paper",s:"R"},{i:"🕺",l:"Act it out or move while practicing",s:"K"}]},
+  {e:"⭐",t:"You're working on a tricky assignment. What helps you most?",o:[{i:"📹",l:"Watch a video or look at examples",s:"V"},{i:"🧑‍🏫",l:"Have someone talk me through it",s:"A"},{i:"📄",l:"Have written instructions to follow",s:"R"},{i:"🔧",l:"Try different things until it works!",s:"K"}]},
+  {e:"🔬",t:"You're learning about nature and animals. What's your FAVORITE way?",o:[{i:"🎬",l:"Watch cool videos and look at photos",s:"V"},{i:"🎙️",l:"Listen to someone tell me about them",s:"A"},{i:"📗",l:"Read a book or fact cards",s:"R"},{i:"🌿",l:"Go outside and explore myself!",s:"K"}]},
+  {e:"🗺️",t:"You need to find a new place you've never been. What do you do?",o:[{i:"🗾",l:"Look at a map or photos",s:"V"},{i:"📞",l:"Ask someone to explain how to get there",s:"A"},{i:"✍️",l:"Write down the directions step by step",s:"R"},{i:"🚶",l:"Walk around and explore until I find it!",s:"K"}]},
+  {e:"📖",t:"When you're listening to a story, what do you like most?",o:[{i:"🎨",l:"Stories with lots of pictures",s:"V"},{i:"🎤",l:"Someone reading it with funny voices",s:"A"},{i:"👀",l:"Reading it myself, quietly",s:"R"},{i:"🎭",l:"Acting it out while I listen!",s:"K"}]},
+  {e:"🔢",t:"Which is your FAVORITE way to learn math?",o:[{i:"📊",l:"Charts, graphs, and diagrams",s:"V"},{i:"💬",l:"My teacher explains it out loud",s:"A"},{i:"📓",l:"Practice problems and written examples",s:"R"},{i:"🧩",l:"Use blocks, coins, or real objects!",s:"K"}]},
+  {e:"🌟",t:"You just finished something. How do you want to know if you did great?",o:[{i:"📈",l:"See a chart or graph of my progress",s:"V"},{i:"🗣️",l:"Someone tells me out loud",s:"A"},{i:"📩",l:"Get written feedback or comments",s:"R"},{i:"🏅",l:"Show off what I can do!",s:"K"}]},
+  {e:"🎵",t:"You're learning a new song. What helps you learn it?",o:[{i:"🎼",l:"See the words written out with colors",s:"V"},{i:"🔂",l:"Listen to it over and over",s:"A"},{i:"📜",l:"Read the lyrics and memorize them",s:"R"},{i:"💃",l:"Dance and move while I sing it!",s:"K"}]},
+  {e:"🤔",t:"You don't understand something at school. What do you do?",o:[{i:"🖥️",l:"Look for pictures or videos",s:"V"},{i:"🙋",l:"Ask someone to explain it",s:"A"},{i:"🔍",l:"Look it up in a book or read about it",s:"R"},{i:"⚡",l:"Try to do it myself until I get it!",s:"K"}]},
+  {e:"🎨",t:"You have a special project to present. Which would you choose?",o:[{i:"🖼️",l:"A colorful poster with drawings",s:"V"},{i:"🎤",l:"Give a talk or presentation",s:"A"},{i:"✏️",l:"Write a story or report",s:"R"},{i:"🏗️",l:"Build a model with my hands!",s:"K"}]},
+  {e:"🖌️",t:"Your dream art class would be…",o:[{i:"👁️",l:"Look at examples and recreate them",s:"V"},{i:"👂",l:"Teacher explains every step",s:"A"},{i:"📋",l:"Follow written instructions",s:"R"},{i:"🎉",l:"Explore materials and just CREATE!",s:"K"}]},
+  {e:"🦁",t:"You're learning about wild animals. What would you LOVE most?",o:[{i:"📸",l:"Look at amazing photos and videos",s:"V"},{i:"🎧",l:"Listen to a podcast or cool facts",s:"A"},{i:"📚",l:"Read books and fact sheets",s:"R"},{i:"🦒",l:"Visit a zoo and see them in real life!",s:"K"}]},
+  {e:"👫",t:"You're playing with friends and there's a problem. What do you do?",o:[{i:"✏️",l:"Draw a diagram to solve it",s:"V"},{i:"💬",l:"Talk it through with everyone",s:"A"},{i:"📝",l:"Write down the rules or ideas",s:"R"},{i:"🤝",l:"Try different solutions until it works!",s:"K"}]},
+  {e:"💭",t:"At the end of the school day, what do you remember BEST?",o:[{i:"🎥",l:"Things I saw: videos, diagrams, maps",s:"V"},{i:"🗣️",l:"Conversations and things I heard",s:"A"},{i:"📖",l:"Things I read or wrote down",s:"R"},{i:"✋",l:"Activities I did and things I built",s:"K"}]}
+];
+
+const ST={
+  V:{name:"Visual",orbit:"Visual Orbit",animal:"🦁",color:"#FF6B9D",bg:"rgba(255,107,157,.12)",border:"rgba(255,107,157,.4)",
+     desc:"You learn best when you SEE things — pictures, videos, diagrams and colorful charts light up your brain! 📸",
+     cdesc:"Learns through images, diagrams, maps and visual patterns.",
+     tips:["Make colorful mind maps","Use pictures in your notes","Watch educational videos","Draw what you're studying","Use highlighters & color coding"]},
+  A:{name:"Aural",orbit:"Aural Orbit",animal:"🦜",color:"#A78BFA",bg:"rgba(167,139,250,.12)",border:"rgba(167,139,250,.4)",
+     desc:"You learn best when you HEAR things — conversations, music, podcasts and explanations fuel your curiosity! 🎧",
+     cdesc:"Learns through listening, discussion, music and spoken explanations.",
+     tips:["Repeat things out loud","Listen to educational podcasts","Study with background music","Ask lots of questions","Read your notes aloud"]},
+  R:{name:"Read & Write",orbit:"Reading Orbit",animal:"🦉",color:"#2DD4BF",bg:"rgba(45,212,191,.12)",border:"rgba(45,212,191,.4)",
+     desc:"You learn best when you READ and WRITE — books, lists, notes and words are your superpowers! 📝",
+     cdesc:"Learns through reading, writing, lists and organizing information in words.",
+     tips:["Keep a learning journal","Make lists of key facts","Read books on topics you love","Rewrite your notes","Create your own quizzes"]},
+  K:{name:"Kinesthetic",orbit:"Explorer Orbit",animal:"🐒",color:"#FBBF24",bg:"rgba(251,191,36,.12)",border:"rgba(251,191,36,.4)",
+     desc:"You learn best when you DO things — experiments, building, moving and hands-on action are your rocket fuel! 🚀",
+     cdesc:"Learns through doing, touching, building and real-world exploration.",
+     tips:["Do experiments & projects","Use real objects when studying","Move while memorizing","Build models & dioramas","Take movement breaks!"]}
+};
+
+const medals=["🥇","🥈","🥉"];
+let cur=0,sel=[],ans={},stars=0,name="";
+
+// Floaters
+(()=>{
+  const icons=['⭐','🌟','✨','💫','🪐','🌙','☄️','🔭','🚀','🌌'];
+  const c=document.getElementById('floaters');
+  for(let i=0;i<18;i++){
+    const el=document.createElement('div');
+    el.className='floater';
+    el.textContent=icons[~~(Math.random()*icons.length)];
+    el.style.cssText=`left:${Math.random()*100}vw;animation-duration:${10+Math.random()*14}s;animation-delay:${Math.random()*18}s;font-size:${14+Math.random()*16}px`;
+    c.appendChild(el);
+  }
+})();
+
+function checkName(){
+  document.getElementById('launch-btn').disabled=document.getElementById('sname').value.trim().length<2;
+}
+function startQuiz(){
+  name=document.getElementById('sname').value.trim();
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('qcard').classList.remove('hidden');
+  renderQ();
+}
+function renderQ(){
+  const q=Qs[cur];
+  document.getElementById('qcounter').textContent=`MISSION ${cur+1} / ${Qs.length}`;
+  document.getElementById('qpts').textContent=`⭐ ${stars} pts`;
+  document.getElementById('pfill').style.width=`${Math.round(cur/Qs.length*100)}%`;
+  document.getElementById('qemoji').textContent=q.e;
+  document.getElementById('qchip').textContent=`MISSION ${cur+1}`;
+  document.getElementById('qtext').textContent=q.t;
+  const nb=document.getElementById('next-btn');
+  nb.textContent=cur+1===Qs.length?'🏆 COMPLETE MISSION':'NEXT MISSION →';
+  nb.disabled=true;
+  const wrap=document.getElementById('opts');
+  wrap.innerHTML='';
+  q.o.forEach(o=>{
+    const s=ST[o.s];
+    const btn=document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML=`<span class="opt-icon">${o.i}</span><span style="flex:1">${o.l}</span><span class="opt-check" id="ck${o.s}"></span>`;
+    btn.onclick=()=>toggle(o.s,btn,s);
+    wrap.appendChild(btn);
+  });
+}
+function toggle(s,btn,si){
+  const i=sel.indexOf(s);
+  const ck=btn.querySelector('.opt-check');
+  if(i>-1){
+    sel.splice(i,1);
+    btn.style.cssText='';
+    ck.style.cssText='';
+    ck.textContent='';
+  } else {
+    sel.push(s);
+    btn.style.background=si.bg;
+    btn.style.borderColor=si.border;
+    btn.style.transform='translateX(7px)';
+    ck.style.cssText=`background:${si.color};border-color:${si.color};color:#fff`;
+    ck.textContent='✓';
+  }
+  document.getElementById('next-btn').disabled=!sel.length;
+}
+function nextQ(){
+  if(!sel.length)return;
+  ans[cur]=[...sel];
+  stars+=sel.length;
+  sel=[];
+  cur+1<Qs.length?(cur++,renderQ()):showResults();
+}
+function confetti(){
+  const cols=['#FFD700','#FF6B9D','#A78BFA','#2DD4BF','#FB923C','#60A5FA'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div');
+    p.className='cf';
+    p.style.cssText=`left:${Math.random()*100}vw;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${1.5+Math.random()*2.5}s;animation-delay:${Math.random()*.8}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),4500);
+  }
+}
+function showResults(){
+  confetti();
+  const sc={V:0,A:0,R:0,K:0};
+  Object.values(ans).forEach(a=>a.forEach(s=>sc[s]++));
+  const total=Object.values(sc).reduce((a,b)=>a+b,0);
+  const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('qcard').classList.add('hidden');
+  document.getElementById('rcard').classList.remove('hidden');
+  document.getElementById('rgreet').textContent=`Amazing, ${name}! Your learning orbits are mapped! 🌌`;
+  // Top 3
+  const t3=document.getElementById('top3');
+  t3.innerHTML='';
+  sorted.slice(0,3).forEach(([s,score],i)=>{
+    const si=ST[s],pct=Math.round(score/total*100);
+    const d=document.createElement('div');
+    d.className='result-item';
+    d.style.cssText=`background:${si.bg};border-color:${si.border};color:#fff`;
+    d.innerHTML=`<div class="ri-top"><span class="ri-medal">${medals[i]}</span><span class="ri-animal">${si.animal}</span><div class="ri-info"><div class="ri-name" style="color:${si.color}">${si.orbit}</div><div class="ri-pct">${pct}% of your answers</div></div><div class="ri-pts" style="background:${si.color}">${score}</div></div><div class="ri-desc">${si.desc}</div><div class="ri-tips">${si.tips.map(t=>`<span class="ri-tip" style="background:${si.color}">✓ ${t}</span>`).join('')}</div><div class="ri-wm">${si.animal}</div>`;
+    t3.appendChild(d);
+  });
+  // All scores
+  const as=document.getElementById('allscores');
+  as.innerHTML='';
+  sorted.forEach(([s,score])=>{
+    const si=ST[s];
+    const b=document.createElement('div');
+    b.className='score-box';
+    b.style.cssText=`background:${si.bg};border-color:${si.border}`;
+    b.innerHTML=`<div class="sb-icon">${si.animal}</div><div class="sb-label" style="color:${si.color}">${si.name}</div><div class="sb-num" style="color:${si.color}">${score}</div>`;
+    as.appendChild(b);
+  });
+  buildCert(sorted.slice(0,3),total);
+}
+function buildCert(top3,total){
+  document.getElementById('cname').textContent=name.toUpperCase();
+  document.getElementById('cdate').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const co=document.getElementById('corbits');
+  co.innerHTML='';
+  top3.forEach(([s,score],i)=>{
+    const si=ST[s];
+    const d=document.createElement('div');
+    d.className='cert-orbit';
+    d.style.cssText=`background:${si.bg};border-color:${si.border}`;
+    d.innerHTML=`<div class="cert-orbit-rank">${medals[i]}</div><div class="cert-orbit-animal">${si.animal}</div><div class="cert-orbit-name" style="color:${si.color}">${si.orbit}</div><div class="cert-orbit-desc">${si.cdesc}</div><div class="cert-orbit-wm">${si.animal}</div>`;
+    co.appendChild(d);
+  });
+  const ct=document.getElementById('ctips');
+  ct.innerHTML='';
+  top3.forEach(([s])=>{
+    const si=ST[s];
+    const col=document.createElement('div');
+    col.className='cert-tip-col';
+    col.innerHTML=`<div class="cert-tip-title" style="color:${si.color}">${si.name} Tips</div>`+si.tips.slice(0,3).map(t=>`<div class="cert-tip-item"><span style="color:${si.color}">▸</span><span style="color:rgba(255,255,255,.65)">${t}</span></div>`).join('');
+    ct.appendChild(col);
+  });
+}
+function restart(){
+  cur=0;sel=[];ans={};stars=0;name="";
+  document.getElementById('rcard').classList.add('hidden');
+  document.getElementById('intro').classList.remove('hidden');
+  document.getElementById('sname').value='';
+  document.getElementById('launch-btn').disabled=true;
+}
+</script>
+</body>
+</html>
